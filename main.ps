@@ -1,4 +1,4 @@
-title Factory Game
+title ConveyorMania
 author Viktor Mønster
 homepage www.puzzlescript.net
 
@@ -164,9 +164,11 @@ LEGEND
 
 BluePath = BluePathV or BluePathH or BluePathC or BlueEnd
 OrangePath = OrangePathV or OrangePathH or OrangePathC or OrangeEnd
+Path = BluePath or OrangePath
 GhostB = GhostBH or GhostBV
 GhostO = GhostOH or GhostOV
-PlayerObstacle = Wall or BluePath or OrangePath
+Ghost = GhostB or GhostO
+PlayerObstacle = Wall or Path
 . = Background
 # = Wall
 P = Player
@@ -190,29 +192,31 @@ COLLISIONLAYERS
 Background
 GhostB, GhostO
 BlueSink, BlueSource, OrangeSink, OrangeSource
-Player, Wall, BluePath, OrangePath
+Path
+Player, Wall
 
 ======
 RULES
 ======
 
-[ > Player BlueSink GhostB | no playerobstacle] -> [ BlueEnd | Player ]
-horizontal [ > Player BlueSource no GhostB | no playerobstacle ] -> [ BlueEnd | Player GhostBH ]
-vertical   [ > Player BlueSource no GhostB | no playerobstacle ] -> [ BlueEnd | Player GhostBV ]
+[ > Player Ghost | PlayerObstacle ] -> [ Player Ghost | PlayerObstacle]
+[ > Player BlueSink GhostB | no PlayerObstacle] -> [ BlueEnd | Player ]
+horizontal [ > Player BlueSource no GhostB | no PlayerObstacle ] -> [ BlueEnd | Player GhostBH ]
+vertical   [ > Player BlueSource no GhostB | no PlayerObstacle ] -> [ BlueEnd | Player GhostBV ]
 
-horizontal [ > Player GhostBH | no playerobstacle ] -> [ BluePathH | Player GhostBH ]
-horizontal [ > Player GhostBV | no playerobstacle ] -> [ BluePathC | Player GhostBH ]
-vertical   [ > Player GhostBV | no playerobstacle ] -> [ BluePathV | Player GhostBV ]
-vertical   [ > Player GhostBH | no playerobstacle ] -> [ BluePathC | Player GhostBV ]
+horizontal [ > Player GhostBH | no PlayerObstacle ] -> [ BluePathH | Player GhostBH ]
+horizontal [ > Player GhostBV | no PlayerObstacle ] -> [ BluePathC | Player GhostBH ]
+vertical   [ > Player GhostBV | no PlayerObstacle ] -> [ BluePathV | Player GhostBV ]
+vertical   [ > Player GhostBH | no PlayerObstacle ] -> [ BluePathC | Player GhostBV ]
 
-[ > Player OrangeSink GhostO | no playerobstacle] -> [ OrangeEnd | Player ]
-horizontal [ > Player OrangeSource no GhostO | no playerobstacle ] -> [ OrangeEnd | Player GhostOH ]
-vertical   [ > Player OrangeSource no GhostO | no playerobstacle ] -> [ OrangeEnd | Player GhostOV ]
+[ > Player OrangeSink GhostO | no PlayerObstacle] -> [ OrangeEnd | Player ]
+horizontal [ > Player OrangeSource no GhostO | no PlayerObstacle ] -> [ OrangeEnd | Player GhostOH ]
+vertical   [ > Player OrangeSource no GhostO | no PlayerObstacle ] -> [ OrangeEnd | Player GhostOV ]
 
-horizontal [ > Player GhostOH | no playerobstacle ] -> [ OrangePathH | Player GhostOH ]
-horizontal [ > Player GhostOV | no playerobstacle ] -> [ OrangePathC | Player GhostOH ]
-vertical   [ > Player GhostOV | no playerobstacle ] -> [ OrangePathV | Player GhostOV ]
-vertical   [ > Player GhostOH | no playerobstacle ] -> [ OrangePathC | Player GhostOV ]
+horizontal [ > Player GhostOH | no PlayerObstacle ] -> [ OrangePathH | Player GhostOH ]
+horizontal [ > Player GhostOV | no PlayerObstacle ] -> [ OrangePathC | Player GhostOH ]
+vertical   [ > Player GhostOV | no PlayerObstacle ] -> [ OrangePathV | Player GhostOV ]
+vertical   [ > Player GhostOH | no PlayerObstacle ] -> [ OrangePathC | Player GhostOV ]
 
 ==============
 WINCONDITIONS
