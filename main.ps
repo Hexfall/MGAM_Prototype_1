@@ -1,0 +1,254 @@
+title Factory Game
+author Viktor Mønster
+homepage www.puzzlescript.net
+
+========
+OBJECTS
+========
+
+Background
+lightgreen green
+11111
+01111
+11101
+11111
+10111
+
+Wall
+brown darkbrown
+00010
+11111
+01000
+11111
+00010
+
+Player
+yellow orange brown gray lightbrown white
+.050.
+.444.
+31113
+.111.
+.2.2.
+
+GhostBH
+blue
+.....
+.....
+.....
+.....
+.....
+
+GhostBV
+blue
+.....
+.....
+.....
+.....
+.....
+
+BlueSink
+Blue
+.000.
+0...0
+0...0
+0...0
+.000.
+
+BlueSource
+Blue darkblue
+.000.
+01110
+01110
+01110
+.000.
+
+BlueEnd
+Blue darkblue
+.010.
+01110
+11111
+01110
+.010.
+
+BluePathV
+Blue darkblue
+.010.
+.010.
+.010.
+.010.
+.010.
+
+BluePathH
+Blue darkblue
+.....
+00000
+11111
+00000
+.....
+
+BluePathC
+Blue darkblue
+.010.
+00100
+11111
+00100
+.010.
+
+GhostOH
+Orange
+.....
+.....
+.....
+.....
+.....
+
+GhostOV
+Orange
+.....
+.....
+.....
+.....
+.....
+
+OrangeSink
+Orange
+.000.
+0...0
+0...0
+0...0
+.000.
+
+OrangeSource
+Orange darkred
+.000.
+01110
+01110
+01110
+.000.
+
+OrangeEnd
+Orange darkred
+.010.
+01110
+11111
+01110
+.010.
+
+OrangePathV
+Orange darkred
+.010.
+.010.
+.010.
+.010.
+.010.
+
+OrangePathH
+Orange darkred
+.....
+00000
+11111
+00000
+.....
+
+OrangePathC
+Orange darkred
+.010.
+00100
+11111
+00100
+.010.
+
+=======
+LEGEND
+=======
+
+BluePath = BluePathV or BluePathH or BluePathC or BlueEnd
+OrangePath = OrangePathV or OrangePathH or OrangePathC or OrangeEnd
+GhostB = GhostBH or GhostBV
+GhostO = GhostOH or GhostOV
+PlayerObstacle = Wall or BluePath or OrangePath
+. = Background
+# = Wall
+P = Player
+B = BlueSink
+* = BlueSource
+O = OrangeSink
+Ø = OrangeSource
+
+=======
+SOUNDS
+=======
+
+EndLevel 3983303
+BlueSink destroy 3983303
+OrangeSink destroy 3983303
+
+================
+COLLISIONLAYERS
+================
+
+Background
+GhostB, GhostO
+BlueSink, BlueSource, OrangeSink, OrangeSource
+Player, Wall, BluePath, OrangePath
+
+======
+RULES
+======
+
+[ > Player BlueSink GhostB | no playerobstacle] -> [ BlueEnd | Player ]
+horizontal [ > Player BlueSource no GhostB | no playerobstacle ] -> [ BlueEnd | Player GhostBH ]
+vertical   [ > Player BlueSource no GhostB | no playerobstacle ] -> [ BlueEnd | Player GhostBV ]
+
+horizontal [ > Player GhostBH | no playerobstacle ] -> [ BluePathH | Player GhostBH ]
+horizontal [ > Player GhostBV | no playerobstacle ] -> [ BluePathC | Player GhostBH ]
+vertical   [ > Player GhostBV | no playerobstacle ] -> [ BluePathV | Player GhostBV ]
+vertical   [ > Player GhostBH | no playerobstacle ] -> [ BluePathC | Player GhostBV ]
+
+[ > Player OrangeSink GhostO | no playerobstacle] -> [ OrangeEnd | Player ]
+horizontal [ > Player OrangeSource no GhostO | no playerobstacle ] -> [ OrangeEnd | Player GhostOH ]
+vertical   [ > Player OrangeSource no GhostO | no playerobstacle ] -> [ OrangeEnd | Player GhostOV ]
+
+horizontal [ > Player GhostOH | no playerobstacle ] -> [ OrangePathH | Player GhostOH ]
+horizontal [ > Player GhostOV | no playerobstacle ] -> [ OrangePathC | Player GhostOH ]
+vertical   [ > Player GhostOV | no playerobstacle ] -> [ OrangePathV | Player GhostOV ]
+vertical   [ > Player GhostOH | no playerobstacle ] -> [ OrangePathC | Player GhostOV ]
+
+==============
+WINCONDITIONS
+==============
+
+all BlueSink on GhostB
+all OrangeSink on GhostO
+
+=======
+LEVELS
+=======
+
+######
+#...B#
+#.#..#
+#.P..#
+#....#
+#...*#
+######
+
+########
+#.....*#
+#..O...#
+#.....##
+#..P#.##
+#.....##
+#.B...Ø#
+#......#
+########
+
+#########
+#*..O..B#
+#.......#
+###...###
+###.P.###
+###...###
+#.......#
+#B..Ø..*#
+#########
